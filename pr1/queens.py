@@ -4,18 +4,26 @@ import sys
 import copy
 import numpy as np
 
+
+def printf(format, *args):
+    sys.stdout.write(format % args)
+
+
 QUEEN = 1
 BANNED = -1
 
 num = int(sys.argv[1])
 print('p cnf', num*num, num)
 array = [[0 for i in range(num)] for i in range(num)]
-array[0][0] = BANNED
+# array[0][0] = BANNED
 
 
 def print_arr(arr):
-    for j in arr:
-        print(*j)
+    for i in range(num):
+        for j in range(num):
+            printf(' %s%d\033[0m', '\x1B[34m ' if arr[i]
+                   [j] >= 0 else '', arr[i][j])
+        printf('\n')
 
 
 def ban(arr, row, col):
@@ -24,6 +32,7 @@ def ban(arr, row, col):
 
     for i in range(num):
         arr[row][i] = BANNED
+
     for i in range(row, num):
         arr[i][col] = BANNED
         if col1 >= 0:
@@ -46,28 +55,19 @@ def place(arr, row):
 
             ban(arr, row, col)
             arr[row][col] = QUEEN
-            # print(row, col)
-            # print_arr(arr)
 
-            if place(arr, row+1) != save:
-                return arr
+            if row == num-1:
+                print_arr(arr)
+                # return True
+
+            if place(arr, row+1) == True:
+                return True
             else:
-                # print(row, 'rollback')
+                # print(row)
                 arr = copy.deepcopy(save)
-                # print()
                 # print_arr(arr)
+                # arr[row][col] = BANNED
+    return False
 
-    return save
 
-
-place(array, 0)
-
-# print_arr(array)
-for i in range(num):
-    for j in range(num):
-        if array[i][j] != BANNED:
-            print(i, j)
-
-# print(end_list)
-# for i in array:
-#     print('\t'.join(map(str, i)), '\t', 0)
+print(place(array, 0))
