@@ -20,10 +20,8 @@ array = [[0 for i in range(num)] for i in range(num)]
 
 def print_arr(arr):
     for i in range(num):
-        for j in range(num):
-            printf(' %s%d\033[0m', '\x1B[34m ' if arr[i]
-                   [j] >= 0 else '', arr[i][j])
-        printf('\n')
+        out = np.array([j for j in range(num*i+1, num*i+num+1)])
+        print(*out*arr[i], 0)
 
 
 def ban(arr, row, col):
@@ -70,4 +68,4 @@ def place(arr, row):
     return False
 
 
-print(place(array, 0))
+place(array, 0)
