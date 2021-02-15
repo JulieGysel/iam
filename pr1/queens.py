@@ -68,4 +68,8 @@ def place(arr, row):
     return False
 
 
-place(array, 0)
+if num == 2 or num == 3:
+    print(*[-1 for i in range(num)], 0)
+    print(*[1 for i in range(num)], 0)
+else:
+    place(array, 0)
