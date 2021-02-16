@@ -28,11 +28,11 @@ def diagonals(array, num):
                 print(-out1[i], -out1[j], 0)
                 print(-out2[i], -out2[j], 0)
 
+
 # program
-
-
 num = int(sys.argv[1])
 arr = np.array([[num*j+i+1 for i in range(num)] for j in range(num)])
 
+print('p cnf', num*num, 1)
 rows(arr, num)
 diagonals(arr, num)
