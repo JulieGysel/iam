@@ -5,71 +5,34 @@ import copy
 import numpy as np
 
 
-def printf(format, *args):
-    sys.stdout.write(format % args)
+def rows(array, num):
+    array2 = np.transpose(array)
+    for (row1, row2) in zip(array, array2):
+        print(*row2, 0)
+        print(*row1, 0)
+
+        for col in range(num):
+            for i in range(col+1, num):
+                print(-row1[col], -row1[i], 0)
+                print(-row2[col], -row2[i], 0)
 
 
-QUEEN = 1
-BANNED = -1
+def diagonals(array, num):
+    array2 = np.fliplr(array)
+
+    for offset in range(-num+1, num-1):
+        out1 = np.diagonal(array, offset)
+        out2 = np.diagonal(array2, offset)
+        for i in range(len(out1)):
+            for j in range(i+1, len(out1)):
+                print(-out1[i], -out1[j], 0)
+                print(-out2[i], -out2[j], 0)
+
+# program
+
 
 num = int(sys.argv[1])
-print('p cnf', num*num, num)
-array = [[0 for i in range(num)] for i in range(num)]
-# array[0][0] = BANNED
+arr = np.array([[num*j+i+1 for i in range(num)] for j in range(num)])
 
-
-def print_arr(arr):
-    for i in range(num):
-        out = np.array([j for j in range(num*i+1, num*i+num+1)])
-        print(*out*arr[i], 0)
-
-
-def ban(arr, row, col):
-    col1 = col
-    col2 = col
-
-    for i in range(num):
-        arr[row][i] = BANNED
-
-    for i in range(row, num):
-        arr[i][col] = BANNED
-        if col1 >= 0:
-            arr[i][col1] = BANNED
-            col1 -= 1
-        if col2 < num:
-            arr[i][col2] = BANNED
-            col2 += 1
-    return arr
-
-
-def place(arr, row):
-    if row >= num:
-        return True
-
-    save = copy.deepcopy(arr)
-
-    for col in range(num):
-        if arr[row][col] == 0:
-
-            ban(arr, row, col)
-            arr[row][col] = QUEEN
-
-            if row == num-1:
-                print_arr(arr)
-                # return True
-
-            if place(arr, row+1) == True:
-                return True
-            else:
-                # print(row)
-                arr = copy.deepcopy(save)
-                # print_arr(arr)
-                # arr[row][col] = BANNED
-    return False
-
-
-if num == 2 or num == 3:
-    print(*[-1 for i in range(num)], 0)
-    print(*[1 for i in range(num)], 0)
-else:
-    place(array, 0)
+rows(arr, num)
+diagonals(arr, num)
