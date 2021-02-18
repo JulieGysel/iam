@@ -4,10 +4,13 @@ import sys
 import copy
 import numpy as np
 
+# read N
+# prepare necessary arrays
 num = int(sys.argv[1])
 arr = np.array([[num*j+i+1 for i in range(num)] for j in range(num)])
 out = []
 
+# loop through rows and columns (transposed array)
 arr_tr = np.transpose(arr)
 for (row1, row2) in zip(arr, arr_tr):
     out.append([*row1, 0])
@@ -18,7 +21,7 @@ for (row1, row2) in zip(arr, arr_tr):
             out.append([-row1[col], -row1[i], 0])
             out.append([-row2[col], -row2[i], 0])
 
-
+# loop through diagonals (mirror-flipped)
 arr_fl = np.fliplr(arr)
 for offset in range(-num+2, num-1):
     out1 = np.diagonal(arr, offset)
@@ -29,6 +32,7 @@ for offset in range(-num+2, num-1):
             out.append([-out1[i], -out1[j], 0])
             out.append([-out2[i], -out2[j], 0])
 
+# output
 print('c N-Queens Problem for N =', num)
 print('p cnf', num*num, len(out))
 for i in out:
